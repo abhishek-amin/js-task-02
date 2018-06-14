@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
-<body>
+<body onload="checkButton()">
 
 	<style>
 		.addbtn {
 			color: green;
 			position: relative;
+			margin-left: 5px;
 		}
 
 		.submitbutton {
@@ -16,6 +17,12 @@
 		.deleteButton {
 			color: red;
 			position: relative;
+			margin-left: 5px;
+		}
+
+		#myTable {
+			margin-top: 10px;
+			border: 1px solid black;
 		}
 
 		div {
@@ -23,17 +30,18 @@
 		}
 	</style>
 	<br>
-	<button class="submitbutton" type="submit" onclick="createTable()">Submit</button>
+	<script src="app.js"></script>
+	<button id="sb" class="submitbutton" type="submit" onclick="createTable()">Submit</button>
 
 	
 
 	<div id="0">
-		<input type="text">
-		<button class="addbtn" onclick="addFunction()">Add</button>
-		<button class="deleteButton" onclick="deleteFunction()">Delete</button>
+		<input type="text" id="INP0" oninput="tableInput(this)">
+		<button id="addButton" class="addbtn" onclick="addFunction()">Add</button>
+		<button id="DEL0" class="deleteButton" onclick="deleteFunction(this)">Delete</button>
 	</div>
 
-	<script src="app.js"></script>
+
 
 </body>
 </html>
