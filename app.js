@@ -17,6 +17,7 @@ function checkButton() {
 
 // creates a new input textbox.
 function addFunction() {
+    
     // create div and textbox
     let div = document.createElement('DIV');
     let inp = document.createElement('INPUT');
@@ -128,6 +129,8 @@ function createTable() {
 
     for (let i = 0; i < counter; i++) {
 
+        let editedTableData;
+
         let tableRow2 = document.createElement('TR');
         let tableData = document.createElement('TD');
         table.appendChild(tableRow2);
@@ -145,9 +148,57 @@ function createTable() {
 
         let item = document.getElementById(i.toString()).firstElementChild.value;
         tableData.innerHTML = item;
+
+        tableData.addEventListener('click', change, false);
+
+        // change function working correctly
+        function change() {
+            let docFrag = document.createDocumentFragment();
+            let input = document.createElement('input');
+            input.setAttribute('id','td-input-id' + i.toString());
+            input.value = this.textContent;
+
+            // editedTableData is for reverseChange method only.
+            editedTableData = tableRow2.removeChild(tableRow2.firstChild);
+
+            docFrag.appendChild(input);
+            tableRow2.appendChild(docFrag);
+            input.addEventListener('blur', reverseChange, false);
+        }
+
+        // reverseChange not working currently
+
+        function reverseChange() {
+            let tdInput = document.getElementById('td-input-id' + i.toString());
+            let docFrag = document.createDocumentFragment();
+            let td = editedTableData;
+            tableRow2.appendChild(td);
+        }
     }
 
+    // (function () {
+    //     'use-strict';
+    //     let td = document.getElementsByTagName('td');
+    //     for (let i = 0; i < td.length; i++) {
+    //         td[i].addEventListener('click', change, false);
+    //     }
+
+    //     function change() {
+    //         if(this.firstElementChild.nodeType !== 3) {
+    //             return;
+    //         }
+    //         let docFrag = document.createDocumentFragment();
+    //         let input = document.createElement('INPUT');
+    //         input.value = this.textContent;
+    //         this.removeChild(this.firstElementChild);
+    //         docFrag.appendChild(input);
+    //         this.appendChild(docFrag);
+    //     }
+    // }());
+
     document.body.appendChild(table);
+
+
 }
 
 function tableInput (inputElement) {
