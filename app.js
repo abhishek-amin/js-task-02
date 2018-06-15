@@ -197,8 +197,6 @@ function createTable() {
     // }());
 
     document.body.appendChild(table);
-
-
 }
 
 function tableInput (inputElement) {
