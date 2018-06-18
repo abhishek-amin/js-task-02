@@ -28,20 +28,21 @@
 		div {
 			margin-top: 10px;
 		}
+
+		td {
+			border: 1px solid black;
+			height: 20px;
+		}
 	</style>
 	<br>
 	<script src="app.js"></script>
-	<button id="sb" class="submitbutton" type="submit" onclick="createTable()">Submit</button>
 
-	
+<button id="sb" class="submitbutton" type="submit" onclick="createTable()">Submit</button>
 
-	<div id="0">
-		<input type="text" id="INP0" oninput="tableInput(this)">
-		<button id="addButton" class="addbtn" onclick="addFunction()">Add</button>
-		<button id="DEL0" class="deleteButton" onclick="deleteFunction(this)">Delete</button>
-	</div>
-
-
-
+<div id="0">
+	<input type="text" id="INP0" oninput="tableInput(this)">
+	<button id="addButton" class="addbtn" onclick="addFunction()">Add</button>
+	<button id="DEL0" class="deleteButton" onclick="deleteFunction(this)">Delete</button>
+</div>
 </body>
 </html>

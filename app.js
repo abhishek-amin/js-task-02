@@ -6,7 +6,6 @@ let deletedIndex = [];
 // check buttons onload
 function checkButton() {
     let inputCount = document.getElementsByTagName('INPUT');
-    // console.log('No. of Input: ' + inputCount.length);
     if (inputCount.length < 5) {
         document.getElementById('sb').disabled = true;
     }
@@ -41,7 +40,6 @@ function addFunction() {
     let att_class_delete = document.createAttribute('CLASS');
     let id_delete = document.createAttribute('ID');
 
-
     att_onInput.value = 'tableInput(this)';
 
     if (deletedIndex.length > 0) {
@@ -51,7 +49,6 @@ function addFunction() {
         id_input.value = 'INP' + deletedIndex[0];
 
         deletedIndex.shift()
-        console.log('popped: ' + deletedIndex[0]);
     }
 
     else {
@@ -93,11 +90,11 @@ function addFunction() {
     checkButton();
 }
 
+// delete button functionality
 function deleteFunction(deleteButtonId) {
 
     checkButton();
     counter = counter - 1;
-    // console.log('counter passing: ' + counter);
     let itemDel = document.getElementById(deleteButtonId.id);
     itemDel.parentNode.parentNode.removeChild(itemDel.parentNode);
     deletedIndex.push(deleteButtonId.id.slice(3));
@@ -111,7 +108,6 @@ function createTable() {
     if (tableExists) {
         tableExists.remove(tableExists); 
     }
-
 
     let table = document.createElement('TABLE');
     let tableHead = document.createElement('TH');
@@ -129,14 +125,13 @@ function createTable() {
 
     for (let i = 0; i < counter; i++) {
 
-        let editedTableData;
-
         let tableRow2 = document.createElement('TR');
         let tableData = document.createElement('TD');
         table.appendChild(tableRow2);
         tableRow2.appendChild(tableData);
 
         let id_td = document.createAttribute('ID');
+        let tdOnClick = document.createAttribute('ONCLICk');
 
         thisDiv = document.getElementById(i.toString());
         thisDivId = thisDiv.id;
@@ -146,69 +141,67 @@ function createTable() {
             tableData.setAttributeNode(id_td);
         }
 
+        tdOnClick.value = "changeTd(this)";
+        tableData.setAttributeNode(tdOnClick);
+        tableData.setAttribute('placeholder', 'please enter something.');
+
         let item = document.getElementById(i.toString()).firstElementChild.value;
         tableData.innerHTML = item;
-
-        tableData.addEventListener('click', change, false);
-
-        // change function working correctly
-        function change() {
-            let docFrag = document.createDocumentFragment();
-            let input = document.createElement('input');
-            input.setAttribute('id','td-input-id' + i.toString());
-            input.value = this.textContent;
-
-            // editedTableData is for reverseChange method only.
-            editedTableData = tableRow2.removeChild(tableRow2.firstChild);
-
-            docFrag.appendChild(input);
-            tableRow2.appendChild(docFrag);
-            input.addEventListener('blur', reverseChange, false);
-        }
-
-        // reverseChange not working currently
-
-        function reverseChange() {
-            let tdInput = document.getElementById('td-input-id' + i.toString());
-            let docFrag = document.createDocumentFragment();
-            let td = editedTableData;
-            tableRow2.appendChild(td);
-        }
     }
-
-    // (function () {
-    //     'use-strict';
-    //     let td = document.getElementsByTagName('td');
-    //     for (let i = 0; i < td.length; i++) {
-    //         td[i].addEventListener('click', change, false);
-    //     }
-
-    //     function change() {
-    //         if(this.firstElementChild.nodeType !== 3) {
-    //             return;
-    //         }
-    //         let docFrag = document.createDocumentFragment();
-    //         let input = document.createElement('INPUT');
-    //         input.value = this.textContent;
-    //         this.removeChild(this.firstElementChild);
-    //         docFrag.appendChild(input);
-    //         this.appendChild(docFrag);
-    //     }
-    // }());
-
     document.body.appendChild(table);
 }
 
-function tableInput (inputElement) {
+let text;
 
+// alters tabledata according to input
+function tableInput (inputElement) {
     let tableExists = document.getElementById('myTable');
 
     if (tableExists) {
-        console.log(inputElement.id);
         let changeInText = document.getElementById(inputElement.id).value;
-        console.log(changeInText);
         id_targetTD = 'TD' + inputElement.id.slice(3);
         document.getElementById(id_targetTD).innerHTML = changeInText;
     }
-
 }
+
+// function to change td to texbox and reverse
+function changeTd (tempTd) {
+    console.log('clicked');
+    if (tempTd.firstElementChild) {
+        tempTd.textContent = text;
+    }
+    else {
+        this.text = tempTd.textContent;
+        let tdInput = document.createElement('INPUT');
+        tdInput.setAttribute('oninput', 'reverseInputChange(this)');
+        tdInput.setAttribute('id', 'reverseInp');
+        tdInput.setAttribute('onclick', 'event.stopPropagation()');
+        tdInput.value = tempTd.textContent;
+        tempTd.innerHTML = '';
+        tempTd.appendChild(tdInput);
+        tdInput.focus();
+
+        tdInput.onblur = function () {
+            console.log('blur');
+            tempTd.removeChild(tdInput);
+            tempTd.textContent = text || tdInput.value;
+            console.log('TD value: ' + tempTd.textContent);
+        };
+    }
+    // checkEmpty();
+}
+
+// alter inputdiv from tabledata input
+function reverseInputChange(inputTemp) {
+    tempID = inputTemp.parentNode.id;
+    let changeInText = document.getElementById(inputTemp.id).value;
+    targetInp = 'INP' + tempID.slice(2);
+    document.getElementById(targetInp).value = changeInText;
+}
+
+// function checkEmpty() {
+//     let temp = document.getElementsByTagName('TD');
+//     if (temp.textContent == '') {
+//         temp.innerHTML = this.text;
+//     }
+// }
